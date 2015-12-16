@@ -5,7 +5,10 @@
  */
 package treesies;
 
+import java.util.ArrayDeque;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Stack;
 
 /**
  *
@@ -70,17 +73,17 @@ public class MyBinaryTree<T> implements BinaryTreeInterface<T> {
 
     @Override
     public Iterator<T> getPreorderIterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new PreorderIterator();
     }
 
     @Override
     public Iterator<T> getPostorderIterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet");
     }
 
     @Override
     public Iterator<T> getInorderIterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new InorderIterator();
     }
 
     @Override
@@ -88,6 +91,18 @@ public class MyBinaryTree<T> implements BinaryTreeInterface<T> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public void inorderTraverse() {
+        inorderTraverse(root);
+    }
+    
+    private void inorderTraverse(BinaryNodeInterface<T> node) {
+        if (node != null) {
+            inorderTraverse(node.getLeftChild());
+            System.out.println(node.getData());
+            inorderTraverse(node.getRightChild());
+        }
+    }
+    
     private void privateSetTree(T rootData, MyBinaryTree<T> leftTree, MyBinaryTree<T> rightTree) {
         this.root = new BinaryNode<T>(rootData);
         
@@ -123,5 +138,94 @@ public class MyBinaryTree<T> implements BinaryTreeInterface<T> {
     protected BinaryNodeInterface<T> getRootNode() {
         return root;
     }
+    
+    private class InorderIterator implements Iterator<T> {
+        private Stack<BinaryNodeInterface<T>> nodeStack;
+        private BinaryNodeInterface<T> currentNode;
+        
+        public InorderIterator() {
+            nodeStack = new Stack<>();
+            currentNode = root;
+        }
+        
+        
+        @Override
+        public boolean hasNext() {
+            return !nodeStack.isEmpty() || (currentNode != null);
+        }
+
+        @Override
+        public T next() {
+            BinaryNodeInterface<T> nextNode = null;
+            
+            // find the leftmost node with no child
+            while (currentNode != null) {
+                nodeStack.push(currentNode);
+                currentNode = currentNode.getLeftChild();
+            } //end while
+            
+            // get leftmost node, then move to its right subtree
+            if ( !nodeStack.isEmpty() ) {
+                nextNode = nodeStack.pop();
+                assert nextNode != null; // since nodeStack was not empty
+                                        // before the pop
+                currentNode = nextNode.getRightChild();
+            } //end if
+            else
+                throw new NoSuchElementException();
+            
+            return nextNode.getData();
+            
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }     
+    } //end clas InorderIterator
+    
+    private class PreorderIterator implements Iterator<T> {
+        private Stack<BinaryNodeInterface<T>> nodeStack;
+        private BinaryNodeInterface<T> currentNode;
+        
+        public PreorderIterator() {
+            nodeStack = new Stack<>();
+            currentNode = root;
+        }
+        
+        @Override
+        public boolean hasNext() {
+            return (currentNode != null || ( !nodeStack.isEmpty() ));
+        }
+
+        @Override
+        public T next() {
+            BinaryNodeInterface<T> nextNode = null;
+            
+            if (currentNode != null)
+                nextNode = currentNode;
+
+            if (currentNode.hasRightChild())
+                nodeStack.push(currentNode.getRightChild());
+
+            if (currentNode.hasLeftChild())
+                nodeStack.push(currentNode.getLeftChild());
+            
+            if (!nodeStack.isEmpty())
+                currentNode = nodeStack.pop();
+            else
+                currentNode = null;
+            
+            return nextNode.getData();
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+        
+    }
+    
+    
     
 }

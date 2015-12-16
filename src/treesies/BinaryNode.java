@@ -76,11 +76,11 @@ public class BinaryNode<T> implements BinaryNodeInterface<T> {
     @Override
     public int getNumberOfNodes() {
         int counter = 1;
-        if ( this.hasLeftChild() )
-            counter += this.getLeftChild().getNumberOfNodes();
+        if (left != null)
+            counter += left.getNumberOfNodes();
         
-        if ( this.hasRightChild() ) 
-            counter += this.getRightChild().getNumberOfNodes();
+        if (right != null) 
+            counter += right.getNumberOfNodes();
         
         return counter;
     }
@@ -105,7 +105,7 @@ public class BinaryNode<T> implements BinaryNodeInterface<T> {
 
     private int getHeight(BinaryNode<T> node) {
         int height = 0;
-        if (node != null)
+         if (node != null)
             height = 1 + Math.max(getHeight(node.left),
                     getHeight(node.right));
         
