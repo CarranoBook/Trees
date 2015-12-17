@@ -6,6 +6,7 @@
 
 package treesies;
 
+
 /**
  *
  * @author NB <nb@fs.org>
@@ -13,8 +14,12 @@ package treesies;
 public class ExpressionTree extends MyBinaryTree<String>
                             implements ExpressionTreeInterface
 {
-
+    
     public ExpressionTree() {}
+    
+    public ExpressionTree(String b) {
+        super(b);
+    }
     
     @Override
     public double evaluate() {
@@ -40,8 +45,8 @@ public class ExpressionTree extends MyBinaryTree<String>
         return result;
     }
 
-    private double getValueOf(String variable) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private double getValueOf(String v) {
+        return Double.parseDouble(v);
     }
 
     private double compute(String operator, double firstOperand, double secondOperand) {

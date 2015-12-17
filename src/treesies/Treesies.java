@@ -18,6 +18,16 @@ public class Treesies {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        ExpressionTree a = new ExpressionTree("+");
+        ExpressionTree b = new ExpressionTree("1");
+        ExpressionTree c = new ExpressionTree("2");
+        a.setTree(a.getRootData(), b, c);
+        System.out.println(a.evaluate());
+       
+        
+    }
+    
+    public MyBinaryTree<Integer> makeTree() {
         MyBinaryTree<Integer> a = new MyBinaryTree<>(1);
         MyBinaryTree<Integer> b = new MyBinaryTree<>(2);
         MyBinaryTree<Integer> c = new MyBinaryTree<>(4);
@@ -28,14 +38,7 @@ public class Treesies {
         b.setTree(b.getRootData(), c, d);
         e.setTree(e.getRootData(), f, g);
         a.setTree(a.getRootData(), b, e);
-        
-        Iterator<Integer> j = a.getInorderIterator();
-       //while (j.hasNext())
-                //System.out.println(j.next());
-        
-        Iterator<Integer> k = a.getInorderIterator();
-        while(k.hasNext())
-            System.out.println(k.next());
+        return a;
     }
     
 }
